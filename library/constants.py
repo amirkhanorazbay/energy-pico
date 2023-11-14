@@ -1,0 +1,31 @@
+MODBUS_REQUEST_PERIOD_MILLIS = 500
+REGULAR_PACKET_PERIOD_SECONDS = 60
+MODBUS_WAIT_PERIOD_MILLIS = 50
+
+PACKET_START_CHARACTER = '<'.encode()
+PACKET_END_CHARACTER = '>'.encode()
+
+DATA_START_CHARACTER = '{'.encode()
+DATA_END_CHARACTER = '}'.encode()
+
+CELL_NUM_VALUE_DELIMITER = '|'.encode()
+REGISTER_NUM_VALUE_DELIMITER = ':'.encode()
+REGISTER_DELIMITER = ';'.encode()
+DATA_DELIMITER = ','.encode()
+
+REGULAR_PACKET_TYPE = '1'.encode()
+EMERGENCY_PACKET_TYPE = '2'.encode()
+
+SERVER_SEND_NOT_STATE = (0).to_bytes(1, "little")
+SERVER_SEND_REGULAR_STATE = (1).to_bytes(1, "little")
+SERVER_SEND_EMERGENCY_STATE = (2).to_bytes(1, "little")
+SERVER_SEND_UNSENDED_STATE = (3).to_bytes(1, "little")
+
+REGULAR_PACKET_STATE = (1).to_bytes(1, "little")
+EMERGENCY_PACKET_STATE = (0).to_bytes(1, "little")
+
+RESTART_NUMBER = 0
+
+TURN_OFF = 0
+TURN_ON = 1
+ERROR = 2
