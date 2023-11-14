@@ -521,7 +521,7 @@ elif attempts_count < 3:
 
 packet_form_state = REGULAR_PACKET_STATE
 
-# wdt = WDT(timeout=8000)  # enable it with a timeout of 8s
+wdt = WDT(timeout=8000)  # enable it with a timeout of 8s
 
 while True:
     if attempts_count >= 3 and not is_fail_msg_sended:
@@ -560,7 +560,7 @@ while True:
             log.clear_log()
         display_general_info()
         last_time_sec = time.time()
-
+    
     # Свободная ли линия ModBus
     if not is_wait_modbus_res:
         # Отправка запроса на Micom
@@ -589,7 +589,7 @@ while True:
         modem_var.connect_to_server()
 
     # * * * * * * * * * * * Прием с UART портов * * * * * * * * * * *
-
+    wdt.feed()
     # Получние ответа от модема
     data = modem_var.process_tcpip()
 
@@ -703,5 +703,5 @@ while True:
             is_wait_modbus_res = False
         else:
             log.log(log.ERROR, "No response received.")
-#     wdt.feed()
+    wdt.feed()
 # ================================= END ================================
