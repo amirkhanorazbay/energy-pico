@@ -40,7 +40,8 @@ class RTC_PCF:
             minute = self.pre_zero(self.bcd2bin(buffer[1]))
             bb = buffer[0] & 0b01111111
             second = self.pre_zero(self.bcd2bin(bb)) 
-            if mode == 0:  
+            if mode == 0:
+                machine.RTC().datetime((int('20' + str(year)), int(month), int(day), 0, int(hour), int(minute), int(second), 0))
                 return second, minute, hour, day, month, year
             if mode == 1:  
                 time_string = f"{day}.{month}.{year}{hour}:{minute}:{second}"

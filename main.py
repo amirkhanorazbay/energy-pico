@@ -117,7 +117,7 @@ def init_modules():
     fl_DS18B20 = False
     ds_sensor = None
     try:
-        ds_sensor = DS18B20(15, 4)
+#         ds_sensor = DS18B20(15, 4)
         statuses = statuses & ~(1 << 1)
         log.log(log.INFO, f"Found DS18B20")
     except Exception as e:
@@ -142,6 +142,7 @@ def init_modules():
     rtc_p = None
     try:
         rtc_p = RTC_PCF(i2c1)
+        rtc_p.ReadTime()
         statuses = statuses & ~(1 << 3)
         log.log(log.INFO, "RTC_PCF is on")
     except Exception as e:
@@ -201,9 +202,9 @@ def display_general_info():
     display_list.append(datetime)
     
     # DS18B20
-    temperature = ds_sensor.do_18B20()
+    temperature = 32 #ds_sensor.do_18B20()
     dict_val["t_air"] = temperature
-    dict_val["t_cpu"] = ds_sensor.do_t_CPU()    
+    dict_val["t_cpu"] = 32 #ds_sensor.do_t_CPU()    
     display_list.append("t_DS:{0:0.1f}".format(temperature))
     
     V = ads.read_ADS(1, 10)
