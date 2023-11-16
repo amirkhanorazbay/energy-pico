@@ -117,7 +117,7 @@ def init_modules():
     fl_DS18B20 = False
     ds_sensor = None
     try:
-        ds_sensor = DS18B20(15, 4)
+        ds_sensor = DS18B20(15)
         statuses = statuses & ~(1 << 1)
         log.log(log.INFO, f"Found DS18B20")
     except Exception as e:
@@ -206,9 +206,9 @@ def display_general_info():
     try:
         temperature = ds_sensor.do_18B20()
         dict_val["t_air"] = temperature
-        dict_val["t_cpu"] = ds_sensor.do_t_CPU()
+        dict_val["t_cpu"] = do_t_CPU()
     except:
-        temperature = ds_sensor.do_t_CPU()  
+        temperature = do_t_CPU()  
     display_list.append("t_DS:{0:0.1f}".format(temperature))
     
     V = ads.read_ADS(1, 10)
@@ -220,6 +220,13 @@ def display_general_info():
         oled.Oled(display_list)
     else:
         log.log(log.ERROR, "OLED: Bad")
+
+
+# Получение температуры CPU
+def do_t_CPU():
+    v_tcpu = t_CPU.read_u16() * 3.3 / (65535)
+    t1 = 27 - (v_tcpu - 0.709) / 0.001721
+    return t1
 
 
 def send_modbus_req(s, Pin_RS0):
@@ -468,6 +475,9 @@ fl_led = False
 led.value(0)
 
 log.log(log.INFO, uos.uname())  # Общая инфо об плате
+
+# Температура CPU
+t_CPU = ADC(4)
 
 # UART
 Pin_RS0 = Pin(2, Pin.OUT)  # RS-485 RE/DE

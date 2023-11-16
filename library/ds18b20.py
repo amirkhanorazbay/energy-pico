@@ -3,14 +3,13 @@ import machine
 
 class DS18B20:
     
-    def __init__(self, pin_ds18b20, pin_cpu):
+    def __init__(self, pin_ds18b20):
         try:
             self.ds_pin = machine.Pin(pin_ds18b20)
             self.ds_sensor = ds18x20.DS18X20(onewire.OneWire(self.ds_pin))
             self.roms = self.ds_sensor.scan()
             self.ds_sensor.convert_temp()
-            # Температура CPU
-            self.t_CPU = ADC(pin_cpu)
+            
         except Exception as e:
             raise e
         
@@ -24,8 +23,4 @@ class DS18B20:
         except Exception as e:
             raise e
     
-    # Получение температуры CPU
-    def do_t_CPU(self):
-        v_tcpu = self.t_CPU.read_u16() * 3.3 / (65535)
-        t1 = 27 - (v_tcpu - 0.709) / 0.001721
-        return t1
+
