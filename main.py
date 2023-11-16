@@ -513,6 +513,9 @@ timer0 = Timer()
 timer0.init(
     period=1000, mode=Timer.PERIODIC, callback=lambda t: led.value(not led.value())
 )
+
+wdt = WDT(timeout=8000)  # enable it with a timeout of 8s
+
 # Базовые настройки модема
 if modem_var.get_status():
     modem_var.init()
@@ -533,8 +536,6 @@ elif attempts_count < 3:
     machine.reset()
 
 packet_form_state = REGULAR_PACKET_STATE
-
-wdt = WDT(timeout=8000)  # enable it with a timeout of 8s
 
 while True:
     if attempts_count >= 3 and not is_fail_msg_sended:
