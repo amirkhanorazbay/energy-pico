@@ -202,9 +202,13 @@ def display_general_info():
     display_list.append(datetime)
     
     # DS18B20
-    temperature = ds_sensor.do_18B20()
-    dict_val["t_air"] = temperature
-    dict_val["t_cpu"] = ds_sensor.do_t_CPU()    
+    temperature = 0
+    try:
+        temperature = ds_sensor.do_18B20()
+        dict_val["t_air"] = temperature
+        dict_val["t_cpu"] = ds_sensor.do_t_CPU()
+    except:
+        temperature = ds_sensor.do_t_CPU()  
     display_list.append("t_DS:{0:0.1f}".format(temperature))
     
     V = ads.read_ADS(1, 10)
