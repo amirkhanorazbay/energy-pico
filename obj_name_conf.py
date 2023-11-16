@@ -1,1 +1,1 @@
-obj_name_conf={"PORT":8070,"IP":"185.146.1.107","OBJECT_ID":1,"CELLS":10, "CELL_TYPE":8,"TLF":"+77019995750","Cicle":300}
+obj_name_conf={"PORT":8070,"IP":"185.146.1.107","OBJECT_ID":1,"CELLS":10, "CELL_TYPE":8,"TLF":"+77019995750","Cicle":60}

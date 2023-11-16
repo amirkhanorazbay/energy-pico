@@ -15,7 +15,7 @@ class DS18B20:
             raise e
         
     # Получение t c DS18B20 (с 1 датчика)
-    def do_18B20():
+    def do_18B20(self):
         ds_sensor.convert_temp()
         try:
             for rom in self.roms:
@@ -25,7 +25,7 @@ class DS18B20:
             raise e
     
     # Получение температуры CPU
-    def do_t_CPU():
-        v_tcpu = t_CPU.read_u16() * 3.3 / (65535)
+    def do_t_CPU(self):
+        v_tcpu = self.t_CPU.read_u16() * 3.3 / (65535)
         t1 = 27 - (v_tcpu - 0.709) / 0.001721
         return t1
