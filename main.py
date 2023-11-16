@@ -206,9 +206,10 @@ def display_general_info():
     try:
         temperature = ds_sensor.do_18B20()
         dict_val["t_air"] = temperature
-        dict_val["t_cpu"] = do_t_CPU()
     except:
-        temperature = do_t_CPU()  
+        temperature = do_t_CPU()
+        
+    dict_val["t_cpu"] = do_t_CPU()
     display_list.append("t_DS:{0:0.1f}".format(temperature))
     
     V = ads.read_ADS(1, 10)
