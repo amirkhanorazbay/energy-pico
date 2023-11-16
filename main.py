@@ -117,7 +117,7 @@ def init_modules():
     fl_DS18B20 = False
     ds_sensor = None
     try:
-#         ds_sensor = DS18B20(15, 4)
+        ds_sensor = DS18B20(15, 4)
         statuses = statuses & ~(1 << 1)
         log.log(log.INFO, f"Found DS18B20")
     except Exception as e:
@@ -202,9 +202,9 @@ def display_general_info():
     display_list.append(datetime)
     
     # DS18B20
-    temperature = 32 #ds_sensor.do_18B20()
+    temperature = ds_sensor.do_18B20()
     dict_val["t_air"] = temperature
-    dict_val["t_cpu"] = 32 #ds_sensor.do_t_CPU()    
+    dict_val["t_cpu"] = ds_sensor.do_t_CPU()    
     display_list.append("t_DS:{0:0.1f}".format(temperature))
     
     V = ads.read_ADS(1, 10)
@@ -505,17 +505,16 @@ if modem_var.get_status():
     log.log(log.INFO, "Modem are configured")
 
 # Счетчик перезагрузок
-attempt_count_file = File("attempt.txt")
-attempt_file_content = attempt_count_file.read()
-attempts_count = len(attempt_file_content.split("\n")) - 1
+attempt_count_file = File("attempt.txt", init_content=0)
+attempts_count = int(attempt_count_file.read())
 dict_val["reset"] = attempts_count
 # Проверяем состояние модулей
 if modules_statuses == 0:
     is_fail_msg_sended = True
     attempts_count = 0
-    attempt_count_file.write("")
 elif attempts_count < 3:
-    attempt_count_file.writeln("Not all modules started properly")
+    attempts_count += 1
+    attempt_count_file.write(attempts_count, mode='w')
     log.log(log.ERROR, "Some modules are fail to start. Initiate restart process")
     machine.reset()
 
@@ -607,7 +606,9 @@ while True:
         cmd_from_server = data[data.index("<") + 1 : data.rindex(">")]
         if "RESTART" in cmd_from_server:
             log.log(log.INFO, f"From server reciveid cmd : restart")
-            attempt_count_file.writeln("From server reciveid cmd : restart")
+            attempts_count = int(attempt_count_file.read())
+            attempts_count += 1
+            attempt_count_file.write(attempts_count, mode='w')
             machine.reset()
         elif "SETTIME" in cmd_from_server:
             str_time = cmd_from_server[cmd_from_server.index(":") + 1 :]
@@ -620,6 +621,9 @@ while True:
             log.log(log.INFO, f"From server reciveid new conf: name:{file_name}, content:{file_content}")
             new_conf_file = File(file_name + '.py')
             new_conf_file.write(file_content, mode='w')
+            attempts_count = int(attempt_count_file.read())
+            attempts_count += 1
+            attempt_count_file.write(attempts_count, mode='w')
             machine.reset()
     elif data and "CONNECT FAIL" in data:
         error_code = error_code | (1 << 0)

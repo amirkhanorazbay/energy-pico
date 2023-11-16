@@ -135,6 +135,10 @@ class Modem:
                     elif re.search("\+CME ERROR:.*", self.response):
                         self.log.log(self.log.ERROR, 'CME ERROR')
                         self.off()
+                        attempt_count_file = File("attempt.txt", init_content=0)
+                        attempts_count = int(attempt_count_file.read())
+                        attempts_count += 1
+                        attempt_count_file.write(attempts_count, mode='w')
                         machine.reset()
                 elif self.sended and abs(time.time() - self.last_time_cmd_sends) > self.at_timeout_in_sec:
                     self.log.log(self.log.ERROR, "Timeout with cmd")
@@ -188,6 +192,10 @@ class Modem:
                     elif re.search("\+CME ERROR:.*", self.response):
                         self.log.log(self.log.ERROR, 'CME ERROR')
                         self.off()
+                        attempt_count_file = File("attempt.txt", init_content=0)
+                        attempts_count = int(attempt_count_file.read())
+                        attempts_count += 1
+                        attempt_count_file.write(attempts_count, mode='w')
                         machine.reset()
                         break
                 elif self.sended and abs(time.time() - self.last_time_cmd_sends) > self.at_timeout_in_sec:
@@ -263,6 +271,10 @@ class Modem:
             elif re.search("\+CME ERROR:.*", self.response):
                 self.log.log(self.log.ERROR, 'CME ERROR')
                 self.off()
+                attempt_count_file = File("attempt.txt", init_content=0)
+                attempts_count = int(attempt_count_file.read())
+                attempts_count += 1
+                attempt_count_file.write(attempts_count, mode='w')
                 machine.reset()
                 return "error is related to ME functionality"
         elif self.sended and abs(time.time() - self.last_time_cmd_sends) > self.at_timeout_in_sec:
@@ -295,6 +307,10 @@ class Modem:
             elif re.search("\+CME ERROR:.*", self.response):
                 self.log.log(self.log.ERROR, 'CME ERROR')
                 self.off()
+                attempt_count_file = File("attempt.txt", init_content=0)
+                attempts_count = int(attempt_count_file.read())
+                attempts_count += 1
+                attempt_count_file.write(attempts_count, mode='w')
                 machine.reset()
                 return "error is related to ME functionality"
         elif self.sended and abs(time.time() - self.last_time_cmd_sends) > self.at_timeout_in_sec:
